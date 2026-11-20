@@ -109,21 +109,23 @@ void draw(){
         for (int j = 0 ; j < W ; j++) cout<<board[i][j];
 }
 void removeLine(){
-    int i,j;
-    for (i = H-2 ; i > 0 ; i-- ){
-        for (j = 0 ; j < W ; j++)
-            if (board[i][j] == ' ') break;
-        if (j == W){
+    for (int i = H-2 ; i > 0 ; i-- ){
+        bool full = true;
+        for (int j = 1 ; j < W-1 ; j++)
+            if (board[i][j] == ' '){
+                full = false;
+                break;
+            }
+        if (full){
             for (int ii = i ; ii > 0 ; ii--)
-                for (int jj = 0; jj < W; jj++)
+                for (int jj = 1 ; jj < W-1 ; jj++)
                     board[ii][jj] = board[ii-1][jj];
+            for (int jj = 1 ; jj < W-1 ; jj++)
+                board[1][jj] = ' ';
             i++;
-            draw();
-            _sleep(200);
         }
     }
 }
-
 int main()
 {
     srand(time(0));
