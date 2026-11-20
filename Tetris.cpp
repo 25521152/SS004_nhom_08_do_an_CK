@@ -111,15 +111,17 @@ void draw(){
 void removeLine(){
     for (int i = H-2 ; i > 0 ; i-- ){
         bool full = true;
-        for (int j = 0 ; j < W ; j++)
+        for (int j = 1 ; j < W-1 ; j++)
             if (board[i][j] == ' '){
                 full = false;
                 break;
             }
         if (full){
             for (int ii = i ; ii > 0 ; ii--)
-                for (int jj = 0 ; jj < W ; jj++)
+                for (int jj = 1 ; jj < W-1 ; jj++)
                     board[ii][jj] = board[ii-1][jj];
+            for (int jj = 1 ; jj < W-1 ; jj++)
+                board[1][jj] = ' ';
             i++;
         }
     }
