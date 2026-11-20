@@ -107,7 +107,7 @@ void boardDelBlock() {
 void initBoard() {
     for (int i = 0; i < H; i++)
         for (int j = 0; j < W; j++)
-            if (i == 0 || i == H - 1 || j == 0 || j == W - 1) board[i][j] = '#';
+            if (i == H - 1 || j == 0 || j == W - 1) board[i][j] = '#';
             else board[i][j] = ' ';
 }
 
@@ -137,9 +137,22 @@ void resetCursor() {
 
 void draw() {
     resetCursor();
+    string frame = "";
+    frame.reserve(1000);
 
-    for (int i = 0; i < H; i++, cout << endl)
-        for (int j = 0; j < W; j++) cout << board[i][j];
+    for (int i = 0; i < H; i++) {
+        for (int j = 0; j < W; j++) {
+            if (i == H - 1 && j == 0)          frame += " \xE2\x96\x9D";             //  ▝ (góc dưới trái khít viền)
+            else if (i == H - 1 && j == W - 1) frame += "\xE2\x96\x98 ";             // ▘  (góc dưới phải khít viền)
+            else if (i == H - 1)               frame += "\xE2\x96\x80\xE2\x96\x80"; // ▀▀ (viền đáy nằm sát mép trên)
+            else if (j == 0)                   frame += " \xE2\x96\x90";             //  ▐ (viền trái sát mép trong)
+            else if (j == W - 1)               frame += "\xE2\x96\x8C ";             // ▌  (viền phải sát mép trong)
+            else if (board[i][j] == ' ')       frame += "  ";
+            else                               frame += "[]";
+        }
+        if (i < H - 1) frame += "\n";
+    }
+    cout << frame << flush;
 }
 
 void removeLine() {
