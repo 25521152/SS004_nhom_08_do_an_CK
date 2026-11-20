@@ -178,26 +178,47 @@ int main()
 {
     setupConsole();
     srand(time(0));
-    x = 5; y = 0; b = rand() % 7;
+
+    int baseBlocks[7] = { 0, 2, 11, 12, 13, 14, 15 };
+    x = 5; y = 0; b = baseBlocks[rand() % 7];
     initBoard();
+
+    int speed = 500;
+    int timer = 0;
+
     while (1) {
         boardDelBlock();
-        if (kbhit()) {
-            char c = getch();
-            if (c == 'a' && canMove(-1, 0)) x--;
-            if (c == 'd' && canMove(1, 0)) x++;
-            if (c == 'x' && canMove(0, 1)) y++;
-            if (c == 'q') break;
+
+        while (kbhit()) {
+            int c = getch();
+            if (c == 0 || c == 224) {
+                c = getch();
+                if (c == 75 && canMove(-1, 0)) x--;
+                if (c == 77 && canMove(1, 0)) x++;
+                if (c == 80 && canMove(0, 1)) y++;
+            }
+            else {
+                if ((c == 'a' || c == 'A') && canMove(-1, 0)) x--;
+                if ((c == 'd' || c == 'D') && canMove(1, 0)) x++;
+                if ((c == 'x' || c == 'X' || c == 's' || c == 'S') && canMove(0, 1)) y++;
+                if (c == 'q' || c == 'Q') return 0;
+            }
         }
-        if (canMove(0, 1)) y++;
-        else {
-            block2Board();
-            removeLine();
-            x = 5; y = 0; b = rand() % 7;
+
+        if (timer >= speed) {
+            if (canMove(0, 1)) y++;
+            else {
+                block2Board();
+                removeLine();
+                x = 5; y = 0; b = baseBlocks[rand() % 7];
+            }
+            timer = 0;
         }
+
         block2Board();
         draw();
-        _sleep(500);
+        Sleep(50);
+        timer += 50;
     }
     return 0;
 }
