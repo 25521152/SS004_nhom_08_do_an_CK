@@ -108,6 +108,22 @@ void draw(){
     for (int i = 0 ; i < H ; i++, cout<<endl)
         for (int j = 0 ; j < W ; j++) cout<<board[i][j];
 }
+void removeLine(){
+    for (int i = H-2 ; i > 0 ; i-- ){
+        bool full = true;
+        for (int j = 0 ; j < W ; j++)
+            if (board[i][j] == ' '){
+                full = false;
+                break;
+            }
+        if (full){
+            for (int ii = i ; ii > 0 ; ii--)
+                for (int jj = 0 ; jj < W ; jj++)
+                    board[ii][jj] = board[ii-1][jj];
+            i++;
+        }
+    }
+}
 int main()
 {
     srand(time(0));
@@ -125,6 +141,7 @@ int main()
         if (canMove(0,1)) y++;
         else{
             block2Board();
+            removeLine();
             x = 5; y = 0; b = rand()%7;
         }
         block2Board();
